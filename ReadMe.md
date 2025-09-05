@@ -18,12 +18,12 @@
 #### СТАТИЧЕСКИЕ СВОЙСТВА:
 
 **ContainerType** - перечисление допустимых типов контейнеров:
-       <pre  
-       FORM: 'form'
-  		DIV: 'div'
- 		SECTION: 'section'
-   	ARTICLE: 'article'
-       </pre 
+```	
+- FORM: 'form'
+- DIV: 'div'
+- SECTION: 'section'
+- ARTICLE: 'article'
+```
 #### КОНСТРУКТОР:
  ```javascript
     new Page(containerSelector = '.form-container', config = {})
