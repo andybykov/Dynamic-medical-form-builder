@@ -62,7 +62,7 @@ class Page {
 
 
 
-showVersion(config = {}) {
+  showVersion(config = {}) {
     const versionElement = document.createElement('div');
     versionElement.className = `version-${config.position} ${config.className || ''}`;
     versionElement.textContent = config.text || `Версия ${this.constructor.VERSION}`;
@@ -86,31 +86,31 @@ showVersion(config = {}) {
     try {
       localStorage.setItem(storageKey, JSON.stringify(this.formData));
       console.log('Данные формы сохранены в localStorage');
-     // alert("Данные формы сохранены в localStorage");
+      // alert("Данные формы сохранены в localStorage");
     } catch (error) {
       console.error('Ошибка при сохранении в localStorage:', error);
 
     }
   }
 
- /**
- * Загружает данные из localStorage и обновляет formData
- * @param { string } storageKey - Ключ для загрузки данных(по умолчанию 'formData')
- */
-loadFromLocalStorage(storageKey = 'formData') {
-  try {
-    const savedData = localStorage.getItem(storageKey);
-    if (savedData) {
-      this.formData = JSON.parse(savedData);
-      this.updateFormFields(); // Обновит поля формы (см. шаг 3)
-      console.log('Данные формы загружены из localStorage');
-      //alert("Данные формы загружены из localStorage");
-      
+  /**
+  * Загружает данные из localStorage и обновляет formData
+  * @param { string } storageKey - Ключ для загрузки данных(по умолчанию 'formData')
+  */
+  loadFromLocalStorage(storageKey = 'formData') {
+    try {
+      const savedData = localStorage.getItem(storageKey);
+      if (savedData) {
+        this.formData = JSON.parse(savedData);
+        this.updateFormFields(); // Обновит поля формы (см. шаг 3)
+        console.log('Данные формы загружены из localStorage');
+        //alert("Данные формы загружены из localStorage");
+
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке из localStorage:', error);
     }
-  } catch (error) {
-    console.error('Ошибка при загрузке из localStorage:', error);
   }
-}
 
   /**
    * Обновляет значения полей формы на основе данных из formData
@@ -270,27 +270,27 @@ loadFromLocalStorage(storageKey = 'formData') {
  * @param {HTMLElement} [options.parent] - Родительский элемент
  * @returns {HTMLElement} Созданный элемент
  */
-/*
-// Добавит класс "proc-username" автоматически
-page.createElement('div', {
-  name: 'username',
-  text: 'Имя пользователя'
-});
-
-// Использует только указанный класс "custom-class"
-page.createElement('span', {
-  name: 'status',
-  className: 'custom-class',
-  text: 'Статус: активен'
-});
-
-// Добавит оба класса: "existing-class" и "proc-user-status"
-page.createElement('div', {
-  name: 'user-status',
-  className: 'existing-class',
-  text: 'Статус пользователя'
-});
-*/
+  /*
+  // Добавит класс "proc-username" автоматически
+  page.createElement('div', {
+    name: 'username',
+    text: 'Имя пользователя'
+  });
+  
+  // Использует только указанный класс "custom-class"
+  page.createElement('span', {
+    name: 'status',
+    className: 'custom-class',
+    text: 'Статус: активен'
+  });
+  
+  // Добавит оба класса: "existing-class" и "proc-user-status"
+  page.createElement('div', {
+    name: 'user-status',
+    className: 'existing-class',
+    text: 'Статус пользователя'
+  });
+  */
   createElement(tagName, options = {}) {
     const element = document.createElement(tagName);
     const {
@@ -513,15 +513,15 @@ consultationPage.addField({
     // Создаем элемент для отображения ошибок
     const errorElement = document.createElement('div');
     errorElement.className = 'error-message';
-    
+
     errorElement.style.color = '#dc3545';
     errorElement.style.fontSize = '0.8em';
     errorElement.style.marginTop = '5px';
     errorElement.style.display = 'inline-block';
     errorElement.style.backgroundColor = '#ffe26cff'
-    
 
-   
+
+
 
     // Создаем метку (если указана)
     if (label) {
@@ -641,13 +641,13 @@ consultationPage.addField({
 
     // Обработчик фокуса
     if (this.formData.growth || this.formData.mass)
-    input.addEventListener('focus', () => {
-      if (input.name === 'growth' || input.name === 'mass' || input.name === 'bsaResult') { // только при фокусе на growth || mass || bsaResult
-        this.calculateBSA();
-      //this.style.borderColor = '#4CAF50'; // Визуальный эффект
-      this.calculateBSA(); // вызываем как метод экземпляра
-      }
-    });
+      input.addEventListener('focus', () => {
+        if (input.name === 'growth' || input.name === 'mass' || input.name === 'bsaResult') { // только при фокусе на growth || mass || bsaResult
+          this.calculateBSA();
+          //this.style.borderColor = '#4CAF50'; // Визуальный эффект
+          this.calculateBSA(); // вызываем как метод экземпляра
+        }
+      });
 
     return input;
   }
@@ -711,11 +711,11 @@ consultationPage.addField({
     // Обновляем formData при изменениях
     input.addEventListener('input', (e) => {
       this.formData[baseName] = this.getInputListValues(container, baseName);
-      
-   
-      
+
+
+
     });
-    
+
   }
 
   /**
@@ -749,66 +749,65 @@ consultationPage.addField({
   }
 
   // Рассчет ППТ
-calculateBSA() {
-  // Проверяем, что оба поля заполнены  
-  if (!this.formData.growth || !this.formData.mass) 
-    {
-    console.log("Ошибка рассчета ППТ!\nПоля не заполнены");
-    return;
+  calculateBSA() {
+    // Проверяем, что оба поля заполнены  
+    if (!this.formData.growth || !this.formData.mass) {
+      console.log("Ошибка рассчета ППТ!\nПоля не заполнены");
+      return;
     }
-    
-  try {
-    const growth = parseFloat(this.formData.growth);
-    const mass = parseFloat(this.formData.mass);
 
-    if (isNaN(growth) || isNaN(mass)) return; //не число - выходим
+    try {
+      const growth = parseFloat(this.formData.growth);
+      const mass = parseFloat(this.formData.mass);
 
-    // Формула Дюбуа
-    const bsa = 0.007184 * Math.pow(growth, 0.725) * Math.pow(mass, 0.425);
-    this.formData.bsaResult = bsa.toFixed(2); // Сохраняем результат
+      if (isNaN(growth) || isNaN(mass)) return; //не число - выходим
 
-    // Обновляем поле с результатом (если оно есть)
-    this.updateResultField();
+      // Формула Дюбуа
+      const bsa = 0.007184 * Math.pow(growth, 0.725) * Math.pow(mass, 0.425);
+      this.formData.bsaResult = bsa.toFixed(2); // Сохраняем результат
 
-    console.log('ППТ = ', this.formData.bsaResult);
-  } catch (e) {
-    console.error('Ошибка расчёта ППТ', e);
+      // Обновляем поле с результатом (если оно есть)
+      this.updateResultField();
+
+      console.log('ППТ = ', this.formData.bsaResult);
+    } catch (e) {
+      console.error('Ошибка расчёта ППТ', e);
+    }
+
   }
-    
-}
 
-// Обнолвение поля рассчета ППТ
-updateResultField() {
-  const resultField = document.getElementById('bsaResult');
-  if (resultField && this.formData.bsaResult !== undefined) {
-    resultField.value = this.formData.bsaResult;
-    // Добавляем визуальное выделение при обновлении
-    resultField.style.backgroundColor = '#d1ffd1ff';
-    setTimeout(() => resultField.style.backgroundColor = '', 700);
+  // Обнолвение поля рассчета ППТ
+  updateResultField() {
+    const resultField = document.getElementById('bsaResult');
+    if (resultField && this.formData.bsaResult !== undefined) {
+      resultField.value = this.formData.bsaResult;
+      // Добавляем визуальное выделение при обновлении
+      resultField.style.backgroundColor = '#d1ffd1ff';
+      setTimeout(() => resultField.style.backgroundColor = '', 700);
+    }
   }
-}
 
   /**
    * Статический метод для получения текущей даты
    * @returns {string} Дата в формате 'dd.mm.yyyy'
    */
-  
+
   static getCurrentDate() {
     const now = new Date();
     const pad = num => num.toString().padStart(2, '0');
     return `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()}`;
   }
-/*
-  // Установка текущей даты в формате DD.MM.YYYY
-  static setCurrentDate() {
-    const now = new Date();
-    const day = ("0" + now.getDate()).slice(-2);
-    const month = ("0" + (now.getMonth() + 1)).slice(-2);
-    const year = now.getFullYear().toString();
-    return `${day}.${month}.${year}`;
-   
-  }
-  */
+  /*
+    // Установка текущей даты в формате DD.MM.YYYY
+    static setCurrentDate() {
+      const now = new Date();
+      const day = ("0" + now.getDate()).slice(-2);
+      const month = ("0" + (now.getMonth() + 1)).slice(-2);
+      const year = now.getFullYear().toString();
+      return `${day}.${month}.${year}`;
+     
+    }
+    */
 
 
   /**
@@ -1042,14 +1041,14 @@ updateResultField() {
         if (hasClassWithPrefix(node, 'section')) {
 
         }
-          /* ||
-           node.classList.contains('medical-examination-container') ||
-           node.classList.contains('flex-container') ||
-           node.classList.contains('flex-left') ||
-           node.classList.contains('flex-right')) 
-           */ 
-          processContainer(node);
-      
+        /* ||
+         node.classList.contains('medical-examination-container') ||
+         node.classList.contains('flex-container') ||
+         node.classList.contains('flex-left') ||
+         node.classList.contains('flex-right')) 
+         */
+        processContainer(node);
+
       });
     };
 
