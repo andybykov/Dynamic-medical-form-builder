@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Осмотр анестезиолога (Dynamic Form)</title>
+    <link rel="stylesheet" type="text/css" href="css/core_page_style.css">
+    <!--
+    <link rel="icon" type="image/vnd.microsoft.icon" href="src/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    -->
+    <script src="js/core_page.js"></script>
+    <script src="js/anesth_variables.js"></script>
+    <script src="js/navibar.js"></script>
+    <!-- <script src="module.js"></script> -->
+
+
+</head>
+
+<body>
+    <!-- NAVIBAR -->
+    <div id="navibar">
+        <script>
+            // Вызываем, чтобы вставить меню в <div id="navibar">
+            Page.renderNavList('#navibar', NavVariables.ref);
+        </script>
+    </div>
+    <!-- NAVIBAR -->
+    <div class="before-form"></div>
+    <div class="form-container"></div> <!-- Сюда добавляется инициализированная форма-->
+
+    <script>
+        // ВЕРХНИЙ КОНТЕЙНЕР calss='before-form'
+        document.addEventListener("DOMContentLoaded", () => {
+            try {
+                // Инициализация верхнего контейнера
+                const upperPage = new Page('.before-form', {
+                    initType: Page.ContainerType.DIV,  // Используем Page 
+                    // Добвляем section- для корректной обработки при копировании
+                    formClass: 'section-upper-container',      // Указываем класс контейнера
+                    version: {
+                        show: false
+                    }
+                });
+
+                // Создаем контейнер для заголовка
+                const pageTitle = upperPage.addDiv('page-title', upperPage.form, {
+                    attrs: {
+                        'id': 'main-title-container'
+                    }
+                });
+
+                //  Добавляем заголовок в созданный контейнер                
+                upperPage.addHeader("Предоперационный осмотр анестезиолога", 1, pageTitle);
+                console.log('Заголовок инициализирован!');
+                
+
+                // Для тестирования - выводим структуру в консоль
+                //console.log('Структура верхнего контейнера:', upperPage.container);
+
+            } catch (error) {
+                console.error('Ошибка инициализации заголовка:', error);
+                // Создаем элемент для отображения ошибки пользователю
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = 'Ошибка загрузки формы. Пожалуйста, обновите страницу.';
+                document.body.prepend(errorDiv);
+            }
+        });
+    </script>
+    <script>
+        // ОСНОВНОЙ КОНТЕЙНЕР calss='form-container'
+        document.addEventListener("DOMContentLoaded", () => {
+            try {
+                
+
+                // Инициализация страницы
+                const consultationPage = new Page('.form-container', {
+                    formClass: 'medical-form',
+                    version: {
+                        show: true,                 // Включить отображение версии
+                           position: 'footer',         // Позиция (footer)
+                        className: 'version-footer' // Дополнительный класс для стилизации
+                    }
+                });
+                 
+
+                // Создаем контейнер для антропометрических данных
+                const flexContainer = consultationPage.addDiv('section-flex-container');
+
+                // Левый блок (дата/время)
+                const flexLeft = consultationPage.addDiv('section-flex-left', flexContainer);
+
+                // Правый блок (группа крови/антропометрия)
+                const flexRight = consultationPage.addDiv('section-flex-right', flexContainer);
+
+                // === flexLeft ====
+                consultationPage.addField({
+                    type: 'text',
+                    name: 'date',
+                    label: 'Дата:',
+                    value: Page.getCurrentDate(),
+                    className: 'date-field',
+                    container: flexLeft
+                });
+
+                consultationPage.addField({
+                    type: 'text',
+                    name: 'time',
+                    label: 'Время:',
+                    //value: '09:00',
+                    value: Page.setCurrentTimeRounded(true), //setCurrentTimeRounded(true) - получает округленное время, setCurrentTimeRounded(false) - не округленнное
+                    className: 'time-field',
+                    container: flexLeft
+                });
+
+                // ==== flexRight ====
+
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'blood',
+                    label: 'Группа крови:',
+                    value: 6,
+                    options: AnesthVariables.patient.bloodGroup,
+                    // Можно указать свой: options: ["O (I)", "A (II)", "B (III)", "AB (IV)", "не известна"],
+                    className: 'blood-field',
+                    container: flexRight
+                });
+
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'blood_rh',
+                    label: 'Резус фактор:',
+                    value: 2, //индекс массива для отображения по умолчанию
+                    options: AnesthVariables.patient.bloodRh,
+
+                    className: 'blood-rh-field',
+                    container: flexRight
+                });
+
+
+                consultationPage.addHeader("# Антропометрические данные", 4, flexRight);
+
+                // рост
+                consultationPage.addField({
+                    type: 'text',
+                    name: 'growth',
+                    label: 'Рост:',
+                    value: '170',
+                    subText: 'cm',
+                    className: 'growth-field',
+                    container: flexRight
+                });
+
+                //масса
+                consultationPage.addField({
+                    type: 'text',
+                    name: 'mass',
+                    label: 'Масса:',
+                    value: '70',
+                    subText: 'kg',
+                    className: 'mass-field',
+                    container: flexRight
+                });
+
+                //ППТ
+                consultationPage.addField({
+                    type: 'text',
+                    name: 'bsaResult',
+                    label: 'ППТ:',
+                    value: '',
+                    subText: 'м²',
+                    className: 'bsa-field',
+                    readonly: true,
+                    container: flexRight
+                });
+
+                consultationPage.addSeparator(); // разделитель
+                consultationPage.calculateBSA();
+
+                // Диагноз
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'diagnosis',
+                    label: 'Диагноз:',
+                    value: 'ИБС. СН 2ФК. ГБ 3 ст,4р.',
+                    className: 'diagnosis-field'
+                });
+
+                consultationPage.addSeparator(); // разделитель
+                // Создаем контейнер 
+                const middleContainer = consultationPage.addDiv('section-midle-container');
+                // ==== Дополнительные сведения ====
+                // Жалобы
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'complaints',
+                    label: 'Жалобы:',
+                    value: 'не предъявляет',
+                    container: middleContainer,
+                    className: 'complaints-field'
+                });
+                // Прием лекарств
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'drugs',
+                    label: 'Постоянный прием лекарственных препаратов:',
+                    value: 'отрицает',
+                    container: middleContainer,
+                    className: 'drugs-field'
+                });
+                // Признаки ВБНК
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'condition-of-veins',
+                    label: 'Состояние вен нижних конечностей:',
+                    options: AnesthVariables.patient.veinsCondition,
+                    container: middleContainer,
+                    className: 'condition-of-veins-field'
+                });
+                // Аллергические реакции
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'allergy',
+                    label: 'Аллергические реакции:',
+                    value: 'отрицает',
+                    container: middleContainer,
+                    className: 'allergy-field'
+                });
+                // Съемные зубные протезы
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'condition-dentures',
+                    label: 'Наличие съемных зубных протезов:',
+                    options: AnesthVariables.patient.yesNo,
+                    container: middleContainer,
+                    className: 'condition-dentures-field'
+                });
+                // Вредные привычки
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'bad-habits',
+                    label: 'Вредные привычки:',
+                    value: "отрицает",
+                    container: middleContainer,
+                    className: 'bad-habits-field'
+                });
+                // Операции, травмы
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'trauma-surgical-operations',
+                    label: 'Операции, травмы:',
+                    value: "отрицает",
+                    container: middleContainer,
+                    className: 'trauma-surgical-operations-field'
+                });
+
+                // ====  ФИЗИКАЛЬНОЕ ОБСЛЕДОВАНИЕ и ЛАБОРАТОРНЫЕ ДАННЫЕ ====
+
+                const sectionContainerHeader = consultationPage.addDiv('section-header-medical-examination');
+                consultationPage.addHeader("# Физикальное обследование", 3, sectionContainerHeader); 
+
+                // создаем контейнер
+                 const sectionContainerEform = consultationPage.addDiv('section-medical-examination-container');
+
+                 // Состояние
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-condition',
+                    label: 'Состояние:',                
+                    value: "",
+                    options: AnesthVariables.patient.stateTypes,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Сознание DATALIST
+                consultationPage.addField({
+                    type: 'datalist',
+                    name: 'patient-level-of-consciousness',
+                    label: 'Уровень сознания:',
+                    placeholder: 'ясное',
+                    value: "ясное",
+                    options: AnesthVariables.patient.stateCons,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Неврологический статус 
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-status-neuro',
+                    label: 'Неврологический статус:',                
+                    value: "без признаков острой неврологической симптоматики",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+                
+
+                //Когнитивные функции
+                consultationPage.addField({
+                    type: 'datalist',
+                    name: 'patient-cognitive-status',
+                    label: 'Когнитивные функции:', 
+                    placeholder: 'сохранны',               
+                    value: "",
+                    options: AnesthVariables.patient.stateCogn,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                //Кожные покровы и видимые слизистые 
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-skin-status',
+                    label: 'Кожные покровы и видимые слизистые:',                
+                    value: "",
+                    options: AnesthVariables.patient.stateSkin,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Периферические отеки patient_edema
+                consultationPage.addField({
+                    type: 'datalist',
+                    name: 'patient-edema-status',
+                    label: 'Периферические отеки:', 
+                    placeholder: 'нет',
+                    //value: "",
+                    options: AnesthVariables.patient.stateEdema,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+                
+                // Тоны сердца patient_heart_tones
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-heart-tones',
+                    label: 'Тоны сердца:',                
+                    value: "",
+                    options: AnesthVariables.patient.heartTonesRhytm,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-heart-tones',
+                    label: '',                
+                    value: 0,
+                    options: AnesthVariables.patient.heartTonesState,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                //АД patient_ad
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-ad', 
+                    label: 'АД:',
+                    subText: 'mmHg',                  
+                    value: "122/70",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                }
+            );
+
+                //ЧСС 
+                consultationPage.addField({
+                    type: 'input',
+                    name: 'patient-heart-rate',
+                    label: 'ЧСС:',
+                    subText: '/min',               
+                    value: "65",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Аускультативно patient_auscultation
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-breath',
+                    label: 'Дыхание:',
+                    value: "спонтанное, адекватное",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Аускультативно patient_auscultation
+                consultationPage.addField({
+                    type: 'datalist',
+                    required: true,
+                    name: 'patient-auscultation',
+                    label: 'Аускультативно дыхание:', 
+                    placeholder: AnesthVariables.patient.stateAuscultation1[0],
+                    options: AnesthVariables.patient.stateAuscultation1,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-auscultation',
+                    label: '',                
+                    value: "",
+                    options: AnesthVariables.patient.stateAuscultation2,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                //ЧД patient_breath_rate
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-breath-rate', 
+                    label: 'ЧД:',
+                    subText: '/min',                  
+                    value: "16",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                //SpO2
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-saturation', 
+                    label: 'SpO2:',
+                    subText: '%',                  
+                    value: "98",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                //Живот patient_abdomen
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-auscultation',
+                    label: 'Живот:',                
+                    value: "",
+                    options: AnesthVariables.patient.stateAbdomenPalpation1,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-auscultation',
+                    label: '',                
+                    value: "",
+                    options: AnesthVariables.patient.stateAbdomenPalpation2,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Признаки диспепсии patient_dyspes
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-dyspes', 
+                    label: 'Признаки диспепсии:',
+                    subText: '',                  
+                    value: "нет",
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+
+                // Мочеиспускание patient_urination
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-urination',
+                    label: 'Мочеиспускание:',                
+                    value: "",
+                    options: AnesthVariables.patient.stateUrination,
+                    container: sectionContainerEform,
+                    className: 'section-medical-examination-container'
+                });
+                consultationPage.addSeparator(); // разделитель
+                
+                // создаем контейнер
+                 const sectionContainerLabForm = consultationPage.addDiv('section-medical-labform-container');
+
+            
+                 // Лаб данные
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-analysis-labs',
+                    label: 'Данные лабораторных и инструментальных исследований:',
+                    value: 'ЭКГ:',
+                    container: sectionContainerLabForm
+                    
+                });
+
+                // Необходимость дообследования
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-deep-examination', 
+                    label: 'Необходимость дообследования:',
+                    subText: '',                  
+                    value: "нет",
+                    container: sectionContainerLabForm
+                    
+                });
+
+                // Планируемая операция
+                consultationPage.addField({
+                    type: 'input', 
+                    name: 'patient-planned-operation', 
+                    label: 'Планируемая операция:',
+                    subText: '',                 
+                    value: "",
+                    container: sectionContainerLabForm
+                    
+                });
+
+                // Планируемая анестезия
+                consultationPage.addField({
+                    type: 'datalist', 
+                    name: 'patient-planned-anesthesia', 
+                    label: 'Планируемая анестезия:',
+                    placeholder: 'Начните вводить...',
+                    subText: '',                  
+                    options: AnesthVariables.anesthesia.type,
+                    container: sectionContainerLabForm
+                    
+                });
+
+                // ASA
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-aneth-asa',
+                    label: 'Анестезиологический риск по ASA:',                    
+                    subText: '',
+                    options: AnesthVariables.patient.anesthRisk,
+                    container: sectionContainerLabForm
+
+                });
+                //Прогностическая оценка трудного дыхательного пути 
+                consultationPage.addField({
+                    type: 'select',
+                    name: 'patient-aneth-mallampati',
+                    label: 'Прогностическая оценка трудного дыхательного пути:',                    
+                    subText: '',
+                    options: AnesthVariables.patient.anesthMallampati,
+                    container: sectionContainerLabForm
+
+                });
+
+
+                // Планируемый мониторинг
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-planned-monitor',
+                    label: 'Планируемый мониторинг:',
+                    value: 'АД, SpO2, ЭКГ, ЧПЭХО, церебральная оксиметрия, капнометрия, газоанализ',
+                    container: sectionContainerLabForm
+
+                });
+
+                // Премедикация
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-premedic',
+                    label: 'Премедикация:',
+                    value: 'Вечером, накануне операции: Tab. Ataraxi 25 mg, per os,\nУтром, в день операции: T.Ataraxi 25 mg per os',                            
+                    container: sectionContainerLabForm
+
+                });
+                // Рекомендации
+                consultationPage.addField({
+                    type: 'textarea',
+                    name: 'patient-recomendations',
+                    label: 'Рекомендации:',
+                    value: 'Голод более 6 часов перед операцией',
+                    container: sectionContainerLabForm
+
+                });
+                
+                // Инициализация копирования    
+                consultationPage.initCopyFunct();
+                // Инициализация сохранения   
+                consultationPage.initSaveFunct();
+
+                // Инициализация сохранения   
+                consultationPage.initClearFunct();
+                // загрузка из хранилища
+                consultationPage.loadFromLocalStorage();
+                // CONSOLE
+                //localStorage.setItem('cartItems', JSON.stringify([1, 2, 3]));
+                
+                console.log('medical-form  инициализирована!');
+            } catch (error) {
+                console.error('Ошибка инициализации medical-form:', error);
+            }
+        });
+    </script>
+<div class="pageButtons">
+    <!-- Кнопка копирования -->
+    <button type="button" name="copyButton" id="copyButton">Copy now!</button>
+    <!-- Кнопка сохранения -->
+    <button type="button" name="saveButton" id="saveButton">Save</button>
+    <!-- Кнопка очистки localStorage -->
+    <button type="button" name="clearButton" id="clearButton">Clear</button>
+</div>
+    
+</body>
+
+</html>

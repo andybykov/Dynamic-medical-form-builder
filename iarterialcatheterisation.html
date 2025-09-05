@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Протокол катетеризации артерии (Dynamic Form)</title>
+  <link rel="stylesheet" type="text/css" href="css/core_page_style.css">
+  <!--
+    <link rel="icon" type="image/vnd.microsoft.icon" href="src/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    -->
+  <script src="js/core_page.js"></script>
+  <script src="js/anesth_variables.js"></script>
+  <script src="js/navibar.js"></script>
+  <!-- <script src="module.js"></script> -->
+
+
+</head>
+
+<body>
+  <!-- NAVIBAR -->
+  <div id="navibar">
+    <script>
+      // Вызываем, чтобы вставить меню в <div id="navibar">
+      Page.renderNavList('#navibar', NavVariables.ref);
+    </script>
+  </div>
+  <!-- NAVIBAR -->
+  <div class="before-form"></div>
+  <div class="form-container"></div> <!-- Сюда добавляется инициализированная форма-->
+
+  <script>
+    // ВЕРХНИЙ КОНТЕЙНЕР calss='before-form'
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        // 1. Инициализация верхнего контейнера
+        const upperPage = new Page('.before-form', {
+          initType: Page.ContainerType.DIV,  // Используем Page 
+          // Добвляем section- для корректной обработки при копировании
+          formClass: 'section-upper-container',      // Указываем класс контейнера
+          version: {
+            show: false
+          }
+        });
+
+        // 2. Создаем контейнер для заголовка
+        const pageTitle = upperPage.addDiv('page-title', upperPage.form, {
+          attrs: {
+            'id': 'main-title-container'
+          }
+        });
+
+        // 3. Добавляем заголовок в созданный контейнер                
+        upperPage.addHeader("Протокол катетеризации артерии", 1, pageTitle);
+        console.log('Заголовок инициализирован!');
+
+
+        // 4. Для тестирования - выводим структуру в консоль
+        //console.log('Структура верхнего контейнера:', upperPage.container);
+
+      } catch (error) {
+        console.error('Ошибка инициализации заголовка:', error);
+        // Создаем элемент для отображения ошибки пользователю
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = 'Ошибка загрузки формы. Пожалуйста, обновите страницу.';
+        document.body.prepend(errorDiv);
+      }
+    });
+  </script>
+
+  <!---->
+
+  <script>
+    // ОСНОВНОЙ КОНТЕЙНЕР calss='form-container'
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+
+
+        // Инициализация страницы
+        const artCatheterPage = new Page('.form-container', {
+          formClass: 'medical-form',
+          version: {
+            show: true,                 // Включить отображение версии
+            //text: 'core page v2.0',    // Кастомный текст версии
+            position: 'footer',         // Позиция (footer/sidebar)
+            className: 'version-footer' // Дополнительный класс для стилизации
+          }
+        });
+        artCatheterPage.loadFromLocalStorage(); // Поля заполнятся значениями из localStorage
+
+
+        // Создаем fleax контейнер 
+        const flexContainer = artCatheterPage.addDiv('section-flex-container');
+
+        // Левый блок 
+        const flexLeft = artCatheterPage.addDiv('section-flex-left', flexContainer);
+
+        // Правый блок 
+        const flexRight = artCatheterPage.addDiv('section-flex-right', flexContainer);
+
+        // === flexLeft ====
+        artCatheterPage.addField({
+          type: 'text',
+          name: 'date',
+          label: 'Дата:',
+          value: Page.getCurrentDate(),
+          className: 'date-field',
+          container: flexLeft
+        });
+
+        artCatheterPage.addField({
+          type: 'text',
+          name: 'time',
+          label: 'Время:',
+          //value: '09:00',
+          value: Page.setCurrentTimeRounded(true), //setCurrentTimeRounded(true) - получает округленное время, setCurrentTimeRounded(false) - не округленнное
+          className: 'time-field',
+          container: flexLeft
+        });
+
+        artCatheterPage.addSeparator(); // 1 разделитель
+        artCatheterPage.addSeparator(); // 2 разделитель
+
+        // ==== flexRight ====     
+
+
+        // создаем контейнер
+        const containerartCatheter = artCatheterPage.addDiv('section-medical-container');
+
+        // заголовок
+        //const headerVenCatheter = venCatheterPage.addHeader('# Показания для катетеризации', 6, containervenCatheter)
+
+
+        artCatheterPage.addField({
+          type: 'datalist',
+          required: true,
+          name: 'artCatheter-target',
+          label: 'Показания для катетеризации. С целью:',
+          //value: AnesthVariables.patient.stateAuscultation1[0],
+          container: containerartCatheter,
+          options: AnesthVariables.anesthesia.targetArt,
+          className: 'venCatheter-artCatheter-target'
+
+
+        });
+        
+
+        // 
+        artCatheterPage.createElement('span', {
+          name: 'acatheter-text',
+          text: 'Под УЗ навигацией, в условиях асептики и антисептики, под местной анестезией Sol. Lidocaini 2% - 1,0 ml.',
+          parent: '.section-medical-container', // Селектор
+          autoProc: true
+        });
+
+
+
+        //Выполнена пункция и катетеризация 
+        artCatheterPage.addField({
+          type: 'datalist',
+          required: true,
+          name: 'acatheter-art-type',
+          label: 'Выполнена пункция и катетеризация',
+          //value: AnesthVariables.patient.stateAuscultation1[0],
+          container: containerartCatheter,
+          options: AnesthVariables.art,
+          className: 'acatheter-art-type'
+        });
+
+        artCatheterPage.addField({
+          type: 'input',
+          name: 'acatheter-type',
+          label: 'катетером',
+          value: 'BD 20G',
+          container: containerartCatheter,
+          className: 'acatheter-type'
+        });
+
+        artCatheterPage.addField({
+          type: 'textarea',
+          name: 'vcatheter-special',
+          label: 'Осложненеия:',
+          value: "Без особенностей и осложнений",
+          container: containerartCatheter,
+          className: 'vcatheter-special'
+        });
+
+        // Асептическая наклейка.
+        artCatheterPage.createElement('span', {
+          name: 'vcatheter-dix-text',
+          text: 'Асептическая наклейка.',
+          parent: '.section-medical-container', // Селектор
+          autoProc: true
+        });
+        
+        //АД patient_ad
+        artCatheterPage.addField({
+          type: 'input',
+          name: 'patient-ad',
+          label: 'АД:',
+          subText: 'mmHg',
+          //value: "122/70",
+          container: containerartCatheter,
+         className: 'vcatheter-ad'
+        });
+
+        artCatheterPage.addSeparator(); // 3 разделитель
+        // Создаем flex контейнер
+        const flexContainer2 = artCatheterPage.addDiv('section-flex-container');
+
+        // Левый блок 
+        const flexLeft2 = artCatheterPage.addDiv('section-flex-left', flexContainer2);
+
+        // Правый блок 
+        const flexRight2 = artCatheterPage.addDiv('section-flex-right', flexContainer2);
+
+        artCatheterPage.addField({
+          type: 'datalist',
+          name: 'doctor',
+          label: 'Врач:',
+          container: flexLeft2,
+		  options: AnesthVariables.docs,
+          className: 'doctor'
+        });
+
+        artCatheterPage.addField({
+          type: 'datalist',
+          name: 'nurses',
+          label: 'Медсестра:',
+          container: flexRight2,
+          options: AnesthVariables.nurses,
+          className: 'nurses'
+        });
+
+
+
+        // Инициализация копирования
+        artCatheterPage.initCopyFunct();
+        // Инициализация сохранения   
+        artCatheterPage.initSaveFunct();
+
+        // Инициализация сохранения   
+        artCatheterPage.initClearFunct();
+        // загрузка из хранилища
+        artCatheterPage.loadFromLocalStorage();
+        console.log('medical-form  инициализирована!');
+      } catch (error) {
+        console.error('Ошибка инициализации medical-form:', error);
+      }
+    });
+  </script>
+
+  <div class="pageButtons">
+    <!-- Кнопка копирования -->
+    <button type="button" name="copyButton" id="copyButton">Copy now!</button>
+    <!-- Кнопка сохранения -->
+    <button type="button" name="saveButton" id="saveButton">Save</button>
+    <!-- Кнопка очистки localStorage -->
+    <button type="button" name="clearButton" id="clearButton">Clear</button>
+  </div>
+</body>
+
+</html>

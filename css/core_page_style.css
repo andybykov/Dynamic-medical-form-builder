@@ -1,0 +1,946 @@
+/* =================================================== */
+/* === ГЛОБАЛЬНЫЕ СТИЛИ И БАЗОВАЯ ТИПОГРАФИКА ======== */
+/* =================================================== */
+
+/* 
+  Основные стили документа:
+  - Семейство шрифтов: Segoe UI (системный) с фоллбэками
+  - Максимальная ширина контента 900px для удобочитаемости
+  - Фон страницы - светлый голубовато-серый (#f0f4f8)
+  - Межстрочный интервал 1.6 для лучшей читаемости текста
+*/
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #007BFF;
+  --background-light: #f8fafc;
+  --text-dark: #2d3748;
+  --text-muted: #4a5568;
+  --border-color: #e2e8f0;
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--background-light);
+  line-height: 1.65;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
+    position: relative; /* для привязки absolute-элемента */
+
+}
+
+
+
+/* 
+  Иерархия заголовков:
+  - Современное сочетание шрифтов
+  - Прогрессивные размеры
+  - Естественные отступы
+  - Четкая типографическая сетка
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Segoe UI',    'Helvetica Neue',    sans-serif;
+  color: var(--primary-color);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.5em 0 0.75em;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.0rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-top: 2.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+
+h4 {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  
+}
+h5{
+  font-size: 1.0rem;
+
+}
+h6 {
+  font-size: 1.0rem;
+  text-align: left;
+}
+
+/* Дополнительные улучшения */
+.subheader {
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+}
+
+/* Для основного текста */
+p {
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+}
+
+/* =================================================== */
+/* === СТИЛИ ФОРМ И КОНТЕЙНЕРОВ ====================== */
+/* =================================================== */
+
+/*
+  Базовый контейнер формы:
+  - Белый фон с тонкой серой рамкой
+  - Скругленные углы (15px)
+  - Внутренние отступы 15px
+  - Отступ снизу 20px для разделения форм
+  - Тень для создания эффекта глубины
+*/
+.form-container {
+  background: #fff;
+  border: 1px solid #d1d1d1;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/*
+  Стили состояний для полей формы:
+  - hover: светло-серый фон (#d3d3d3)
+  - focus: белый фон, синяя рамка (2px #007BFF)
+  - Тень при фокусе для визуального выделения
+*/
+.form-container input:hover,
+.form-container textarea:hover,
+.form-container select:hover {
+  background: #d3d3d3;
+}
+
+.form-container input:focus,
+.form-container textarea:focus,
+.form-container select:focus {
+  background: #fff;
+  border: 2px solid #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  font-weight: normal;
+}
+
+/* 
+  Медицинская форма (специфический стиль):
+  - Flex-контейнер с колоночным направлением
+  - Отступ между элементами 20px
+*/
+.medical-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-midle-container {
+  display: flex;
+  padding-left: 20px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pageButtons {
+  position: fixed;
+    /* прилипает к окну */
+    top: 5em;
+    right: 5em;
+    width: 9em;
+}
+
+/* =================================================== */
+/* === ЭЛЕМЕНТЫ ФОРМ ================================ */
+/* =================================================== */
+
+/*
+  Стили меток (label):
+  - Жирное начертание
+  - Правый отступ 2px
+*/
+.medical-form label {
+  margin-right: 2px;
+  font-weight: bold;
+}
+
+/*
+  Общие стили для input и select:
+  - Светло-серый фон (#e0e0e0)
+  - Максимальная ширина 70% от родителя
+  - Минимальная высота 40px
+  - Скругленные углы (11px)
+  - Плавные переходы для всех свойств
+*/
+.medical-form input,
+.medical-form select {
+  background: #e0e0e0;
+  color: #434343;
+  width: 100%;
+  max-width: 50%;
+  font-size: 13px;
+  min-height: 40px;
+  /*margin: 0 6px 10px 0;*/
+  margin-top: 0;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  margin-left: 0;
+  border-radius: 11px;
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  outline: none;
+  cursor: text;
+  overflow: auto;
+}
+
+/*
+  Специфические стили для textarea:
+  - Максимальная ширина 100%
+  - Автоматическое изменение высоты
+*/
+.medical-form textarea {
+  background: #e0e0e0;
+  color: #434343;
+  width: 100%;
+  height: 20px;
+  max-width: 100%;
+  font-size: 13px;
+  min-height: 40px;
+  margin: 0 6px 10px 0;
+  border-radius: 11px;
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  outline: none;
+  cursor: text;
+  overflow: auto;
+}
+
+/* =================================================== */
+/* === СПЕЦИАЛЬНЫЕ КОНТЕЙНЕРЫ ======================= */
+/* =================================================== */
+
+/*
+  Контейнер для медицинского осмотра:
+  - Flex-контейнер с переносом элементов
+  - Серый фон (#f0f0f0)
+  - Адаптивное поведение (изменение ширины при >900px)
+*/
+.section-medical-examination-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-content: flex-end;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/*
+flex: <flex-grow><flex-shrink><flex-basis>;
+где: 1 — flex-grow (коэффициент растяжения) 
+      1 — flex-shrink (коэффициент сжатия) 
+      calc(50% - 20px) — flex-basis (базовый размер)
+*/
+@media (min-width: 901px) {
+  .section-medical-examination-container {
+    flex: 1 1 calc(50% - 20px);
+    /*
+    «Элемент может растягиваться и сжиматься,
+      но изначально стремится занять 50% ширины контейнера минус 20px,
+      чтобы учесть отступы».
+      */
+  }
+}
+
+/*
+  Секции формы:
+  - Светлый голубоватый фон (#f9fbfd)
+  - Тонкая светло-серая рамка
+  - Анимация появления (fadeIn)
+*/
+.form-section {
+  padding: 15px;
+  border-radius: 10px;
+  background: #f9fbfd;
+  border: 1px solid #e1e8ed;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/*
+  Вспомогательный текст (единицы измерения):
+  - Серый цвет (#7f8c8d)
+  - Уменьшенный размер шрифта (0.9em)
+*/
+.sub-text {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
+
+/*
+  Контейнер для медицинского осмотра:
+  - Flex-контейнер с переносом элементов
+  - Серый фон (#f0f0f0)
+  - Адаптивное поведение (изменение ширины при >900px)
+*/
+.section-medical-container {
+  display: block;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+
+
+/* =================================================== */
+/* === FLEX-КОНТЕЙНЕРЫ ДЛЯ МАКЕТА ==================== */
+/* =================================================== */
+
+/*
+  Гибкий контейнер:
+  - Распределение пространства между элементами
+  - Выравнивание по верхнему краю
+  - Перенос элементов при необходимости
+*/
+.section-flex-container {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  margin: 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+/* Левая часть */
+.section-flex_left {
+  flex-grow: 7;
+}
+
+/* Правая часть  */
+.flex_right {
+  flex-grow: 3;
+}
+
+/* =================================================== */
+/* === ТИПОГРАФИЯ И ТЕКСТОВЫЕ ЭЛЕМЕНТЫ =============== */
+/* =================================================== */
+
+/*
+  Заголовок формы:
+  - Крупный шрифт (22px)
+  - Жирное начертание (700)
+  - Граница снизу для визуального разделения
+*/
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+/*
+  Заголовок секции:
+  - Размер шрифта 18px
+  - Цвет темно-синий (#34495e)
+*/
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+/* ВИДЖЕТ ВЕРСИЯ */
+.version-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-radius: 5px 0 0 0;
+  font-size: 12px;
+  color: #666;
+}
+
+/* =================================================== */
+/* === РАЗДЕЛИТЕЛИ И ПРОБЕЛЫ ======================== */
+/* =================================================== */
+
+/**
+ * Горизонтальный разделитель:
+ * - Светло-серая пунктирная линия
+ * - Автоматические отступы для визуального разделения секций
+ */
+.separator {
+display: block;
+  margin: 2em 0;
+  border: none;
+  height: 1px;
+  /* толщина линии */
+  background: linear-gradient(to right,
+      transparent,
+      #e0e0e0,
+      transparent);
+}
+hr {
+  visibility: hidden;
+}
+
+/* Стили для input_list */
+.input-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.input-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-list-item input {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.remove-input-item {
+  background: #ff4444;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.add-input-item {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* =================================================== */
+/* === КОМПОНЕНТЫ ИНТЕРФЕЙСА ======================== */
+/* =================================================== */
+
+.required-field label::after {
+  /*content: " *";*/
+  color: #dc3545;
+}
+
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: #dc3545;
+
+}
+
+/*
+  Кнопки (базовые стили):
+  - Синий фон (#007BFF)
+  - Белый текст
+  - Скругленные углы (15px)
+  - Тень для эффекта глубины
+  - Плавные переходы
+*/
+
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button {
+  width: auto;
+  padding: 8px 16px;
+  margin: 5px;
+  font-weight: bold;
+  color: white;
+  background-color: #007BFF;
+  border: 2px solid #007BFF;
+  border-radius: 15px;
+  opacity: 0.9;
+  cursor: pointer;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+/* Состояния кнопок */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.button:hover {
+  background-color: #0064cf;
+  opacity: 1;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+.button:active {
+  background-color: #004a80;
+  transform: scale(1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled,
+.button:disabled {
+  background-color: #95c5ff;
+  border-color: #95c5ff;
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =================================================== */
+/* === СПЕЦИАЛЬНЫЕ СТИЛИ ============================ */
+/* =================================================== */
+
+/* Только для чтения */
+.readonly-field {
+  background: #e9ecef !important;
+  cursor: not-allowed;
+}
+
+/* Вычисляемые поля */
+.calculated-field {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Виджет даты/времени */
+.time-date-widget {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #007BFF, #6eb1ff);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 0 0 0 12px;
+  z-index: 100;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Отображение времени */
+.time-display {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Отображение даты */
+.date-display {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* =================================================== */
+/* === НОВЫЕ КОМПОНЕНТЫ ============================= */
+/* =================================================== */
+
+/* 
+  Уведомления (нотификации):
+  - Позиционирование в правом верхнем углу
+  - Плавное появление и исчезание
+  - Разные типы (успех, ошибка, предупреждение)
+*/
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(120%);
+  transition: transform 0.4s ease;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.success {
+  background: #28a745;
+}
+
+.notification.error {
+  background: #dc3545;
+}
+
+.notification.warning {
+  background: #ffc107;
+  color: #333;
+}
+
+/* 
+  Индикатор загрузки:
+  - Анимированный элемент для показа процесса загрузки
+  - Центрируется по экрану
+*/
+.loader {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 123, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #007BFF;
+  animation: spin 1s linear infinite;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+/* 
+  Карточки данных:
+  - Контейнеры для отображения структурированной информации
+  - Тень для создания эффекта глубины
+*/
+.data-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.data-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 
+  Вкладки (табы):
+  - Навигация между разделами контента
+  - Активная вкладка выделена цветом
+*/
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  margin-right: 5px;
+}
+
+.tab.active {
+  background: #f8f9fa;
+  border-color: #ddd #ddd #fff;
+  border-top: 2px solid #007BFF;
+}
+
+/* =================================================== */
+/* === АНИМАЦИИ ===================================== */
+/* =================================================== */
+
+/* Анимация появления элементов */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Анимация вращения для индикатора загрузки */
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* =================================================== */
+/* === АДАПТИВНЫЕ СТИЛИ ============================= */
+/* =================================================== */
+
+@media (max-width: 768px) {
+  .flex-group {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .time-date-widget {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .section-flex-container {
+    flex-direction: column;
+  }
+
+  .section-flex_left,
+  .flex_right {
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  /* Адаптация полей ввода */
+  .medical-form input,
+  .medical-form select {
+    max-width: 100%;
+  }
+
+  /* Скрытие виджета времени на маленьких экранах */
+  .time-date-widget {
+    position: relative;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+}
+
+/* =================================================== */
+/* === СТИЛИ ДЛЯ ПЕЧАТИ ============================= */
+/* =================================================== */
+
+@media print {
+  body {
+    background: white;
+    padding: 10px;
+  }
+
+  .form-container {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .no-print {
+    display: none;
+  }
+
+  button {
+    display: none;
+  }
+}
+
+/* Стили для параграфов (аналогично пунктам меню) */
+p {
+  display: block;
+  padding: 8px 16px;
+  margin: 2px 0;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}
+
+/* =================================================== */
+/* === СТИЛИ НАВИГАЦИИ ============================= */
+/* =================================================== */
+/* Базовые стили для всех ссылок */
+a {
+  display: block;
+  color: #0066cc;
+  text-decoration: none;
+  padding: 8px 16px;
+  margin: 2px 0;
+  border-radius: 4px;
+  /* background-color: #d6eaff;*/
+
+}
+
+/* Состояния ссылок */
+a:hover {
+  /* background-color: #007bff;*/
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+  transform: translateX(3px);
+}
+
+a:active {
+
+  background-color: #0056b3;
+  color: white;
+}
+
+a:visited {
+  color: #0066cc;
+  background-color: #e7f3ff;
+}
+
+/* Специфичные стили для основной навигации */
+.nav-container {
+  position: fixed;
+  top: 5em;
+  left: 1em;
+  width: 9em;
+
+}
+
+ul.navibar,
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+
+
+}
+
+/* Дополнительные стили для пунктов меню */
+li {
+  padding: 0;
+  margin: 0 0 10px 0px;
+  border-left: 3px dashed #707377;
+
+}
+
+li a {
+  margin: 0;
+}
+
+/* Особый стиль для параграфов со ссылками */
+p>a {
+  display: inline-block;
+  margin: -8px -16px;
+  padding: 8px 16px;
+}
+
+
+/* Стили для фразы дня */
+#quote-of-the-day {
+
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  /*text-shadow: 1px 1px #ccc;*/
+  font-size: 32px;
+  /* Размер шрифта для цитаты */
+  font-style: bold;
+  /*  для цитаты */
+  margin-bottom: 10px;
+  /* Отступ снизу */
+  margin-top: 100px;
+}
+
+/* Стили для подписи автора */
+.quote-author {
+  font-size: 28px;
+  /* Размер шрифта для автора */
+  color: #555;
+  /* Цвет текста для автора */
+  text-align: right;
+  /* Выравнивание текста по правому краю */
+  font-style: italic;
+  /* Курсив */
+  display: block;
+  /* Отображение в виде блочного элемента */
+  margin-top: 5px;
+  /* Отступ сверху */
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,244 @@
+===============================================================================
+ДОКУМЕНТАЦИЯ К КЛАССУ Page (версия 2.2)
+===============================================================================
+
+ОБЩЕЕ ОПИСАНИЕ:
+Класс Page предназначен для динамического создания и управления HTML-формами. 
+Реализует паттерн "Фабрика" для создания элементов формы и предоставляет инструменты 
+для работы с контейнерами, полями ввода, заголовками и данными формы.
+
+------------------------------------------------------------------------------
+
+СТАТИЧЕСКИЕ СВОЙСТВА:
+
+1. ContainerType - перечисление допустимых типов контейнеров:
+   - FORM: 'form'
+   - DIV: 'div'
+   - SECTION: 'section'
+   - ARTICLE: 'article'
+
+2. VERSION - текущая версия класса (по умолчанию '2.2')
+
+------------------------------------------------------------------------------
+
+КОНСТРУКТОР:
+new Page(containerSelector = '.form-container', config = {})
+
+Параметры:
+- containerSelector: CSS-селектор контейнера (по умолчанию '.form-container')
+- config: объект конфигурации:
+  {
+    formClass: 'form-group',       // CSS-класс контейнера
+    initType: Page.ContainerType,  // Тип контейнера (по умолчанию FORM)
+    version: {                    // Настройки версии
+      show: true,                 // Показывать версию
+      text: 'v2.2',               // Текст версии
+      position: 'footer'          // Позиция ('sidebar' или 'footer')
+    }
+  }
+
+Пример:
+const page = new Page('#app', {
+  formClass: 'custom-form',
+  initType: Page.ContainerType.SECTION
+});
+
+------------------------------------------------------------------------------
+
+ОСНОВНЫЕ МЕТОДЫ:
+
+1. addHeader(text, level = 2, container = null)
+   - Добавляет заголовок в форму
+   - Параметры:
+     * text: текст заголовка
+     * level: уровень заголовка (1-6)
+     * container: родительский элемент
+   - Возвращает: HTML-элемент заголовка (H1-H6)
+
+   Пример:
+   page.addHeader('Личные данные', 2);
+
+2. addField(params)
+   - Добавляет поле ввода в форму
+   - Параметры (объект):
+     {
+       type: 'text',             // Тип поля (text/select/textarea/checkbox/radio)
+       name: 'fieldname',        // Имя поля (обязательное)
+       label: 'Field Label',     // Текст подписи
+       value: '',                // Значение по умолчанию
+       options: [],              // Опции для select
+       subText: '',              // Поясняющий текст
+       required: true,           // Обязательное поле
+       container: null,          // Родительский элемент
+       className: ''             // Дополнительные CSS-классы
+     }
+   - Возвращает: HTML-элемент поля
+
+   Примеры:
+   // Текстовое поле
+   page.addField({
+     type: 'text',
+     name: 'username',
+     label: 'Имя пользователя:'
+   });
+
+   // Выпадающий список
+   page.addField({
+     type: 'select',
+     name: 'gender',
+     label: 'Пол:',
+     options: ['Мужской', 'Женский']
+   });
+   
+   input_select Примеры использования:
+	1.Простой список строк:
+
+javascript
+page.addField({
+  type: 'input_list',
+  name: 'emails',
+  label: 'Дополнительные email:',
+  value: ['user@example.com', ''], // Начальные значения
+  subText: 'Можно добавить несколько email'
+});
+	2.Список с динамическими опциями:
+
+javascript
+page.addField({
+  type: 'input_list',
+  name: 'skills',
+  label: 'Ключевые навыки:',
+  options: ['JavaScript', 'HTML', 'CSS'], // Автодополнение
+  className: 'skills-list'
+});
+	3.Связанный список с select:
+
+javascript
+page.addField({
+  type: 'input_list',
+  name: 'education',
+  label: 'Образование:',
+  options: [
+    {value: 'high', text: 'Высшее'},
+    {value: 'college', text: 'Колледж'}
+  ], // Каждый элемент будет select
+  value: ['high']
+});
+
+3. addDiv(name, parent = this.form, options = {})
+   - Добавляет DIV-контейнер
+   - Параметры:
+     * name: CSS-класс контейнера
+     * parent: родительский элемент
+     * options: дополнительные параметры:
+       {
+         id: 'elementId',       // ID элемента
+         attrs: {}              // Дополнительные атрибуты
+       }
+   - Возвращает: HTML-элемент DIV
+
+   Пример:
+   const section = page.addDiv('user-section', null, {
+     id: 'user-info',
+     attrs: { 'data-type': 'info' }
+   });
+
+4. getFormData()
+   - Возвращает данные формы в виде объекта
+   - Возвращает: { имя_поля: значение }
+
+   Пример:
+   const formData = page.getFormData();
+   console.log(formData.username);
+
+5. copyFormText()
+   - Асинхронно копирует содержимое формы в буфер обмена
+   - Процесс:
+     1. Собирает текст формы
+     2. Форматирует текст
+     3. Копирует в буфер
+     4. Показывает уведомление
+
+   Пример:
+   document.getElementById('copyBtn').addEventListener('click', async () => {
+     await page.copyFormText();
+   });
+
+6. setPageTitle(title, includeVersion = true)
+   - Устанавливает заголовок страницы
+   - Параметры:
+     * title: основной заголовок
+     * includeVersion: добавлять версию
+
+   Пример:
+   page.setPageTitle('Медицинская карта');
+
+------------------------------------------------------------------------------
+
+ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ:
+
+1. addSeparator() - добавляет горизонтальный разделитель (<hr>)
+2. addSpacer() - добавляет разделительную линию (120 символов '-')
+3. removeField(name) - удаляет поле по имени
+4. clearForm() - полностью очищает форму
+5. showVersion(config) - отображает версию интерфейса
+
+------------------------------------------------------------------------------
+
+ПРИМЕР СОЗДАНИЯ ФОРМЫ:
+
+// Инициализация
+const formPage = new Page('#app', {
+  formClass: 'medical-form',
+  initType: Page.ContainerType.FORM
+});
+
+// Заголовок
+formPage.addHeader('Медицинская анкета', 1);
+
+// Личные данные
+const personalSection = formPage.addDiv('personal-section');
+formPage.addHeader('Личные данные', 2, personalSection);
+
+formPage.addField({
+  type: 'text',
+  name: 'fullname',
+  label: 'ФИО:',
+  container: personalSection
+});
+
+// Кнопка копирования
+const copyBtn = document.createElement('button');
+copyBtn.textContent = 'Скопировать данные';
+copyBtn.addEventListener('click', () => formPage.copyFormText());
+formPage.form.appendChild(copyBtn);
+
+------------------------------------------------------------------------------
+
+ОСОБЕННОСТИ РАБОТЫ:
+
+1. Автоматическое сохранение данных в объекте formData
+2. Интеллектуальное форматирование текста при копировании
+3. Поддержка трех способов выбора значения для select-полей:
+   - По значению
+   - По индексу
+   - Первый элемент (по умолчанию)
+4. Реализация паттерна "Фабрика" для создания контейнеров
+
+------------------------------------------------------------------------------
+
+ОБРАБОТКА ОШИБОК:
+Класс генерирует ошибки в случаях:
+- Не найден контейнер
+- Некорректный тип контейнера
+- Отсутствует обязательный параметр name для поля
+- Недопустимый уровень заголовка (не 1-6)
+
+Пример обработки ошибок:
+try {
+  const page = new Page('#missing-container');
+} catch (error) {
+  console.error(error.message);
+}
+
+===============================================================================

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Главная</title>
+    <link rel="stylesheet" type="text/css" href="css/core_page_style.css">
+   
+    <link rel="icon" type="image/vnd.microsoft.icon" href="src/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    
+    <script src="js/core_page.js"></script>
+    <script src="js/anesth_variables.js"></script>
+    <script src="js/navibar.js"></script>
+    <script src="js/quoteOfTheDay.js"></script>
+    <!-- <script src="module.js"></script> -->
+
+
+</head>
+
+<body>
+    <div id="navibar">
+        <script>
+            // Вызываем, чтобы вставить меню в <div id="navibar">
+            Page.renderNavList('#navibar', NavVariables.ref);            
+        </script>        
+    </div>
+    <!--<h3>Hello world!</h3>-->
+    <div id="quote-of-the-day" class="quote-of-the-day"></div> <!-- Элемент для отображения фразы дня -->
+    <span id="quote-author" class="quote-author"></span> <!-- Элемент для отображения автора -->
+
+    <script>
+        // ВЕРХНИЙ КОНТЕЙНЕР calss='before-form'
+        document.addEventListener("DOMContentLoaded", () => {
+        
+                // 1. Инициализация верхнего контейнера
+                const indexPage = new Page('.quote-of-the-day', {
+                     version: {
+                        show: true
+                    }
+                });
+
+                
+                
+               
+        });
+        ///let items = JSON.parse(localStorage.getItem('cartItems'));
+       // console.log(items);
+
+    </script>
+    
+
+
+
+</body>
+
+</html>
