@@ -18,15 +18,15 @@
 #### СТАТИЧЕСКИЕ СВОЙСТВА:
 
 **ContainerType** - перечисление допустимых типов контейнеров:
-```	
-- FORM: 'form'
-- DIV: 'div'
-- SECTION: 'section'
-- ARTICLE: 'article'
-```
+	
+`FORM: 'form'`
+`DIV: 'div'`
+`SECTION: 'section'`
+`ARTICLE: 'article`
+
 #### КОНСТРУКТОР:
  ```javascript
-    new Page(containerSelector = '.form-container', config = {})
+new Page(containerSelector = '.form-container', config = {})
  ```
 ---
 
@@ -35,30 +35,28 @@
  ##### Установка заголовка страницы
 `setPageTitle(title, includeVersion = true)`
 
-    Параметры:
-	
-     * title: основной заголовок
-     * includeVersion: показывать ли версию
+Параметры:
+* title: основной заголовок
+* includeVersion: показывать ли версию
 	 
 ```javascript
-   //Пример:
-   page.setPageTitle('Заголовок страницы');
+//Пример:
+page.setPageTitle('Заголовок страницы');
 ```
- ##### Добавление заголовка <h1> - <h6>
+ ##### Добавление заголовка <h1> <h6>
 `addHeader(text, level = 2, container = null)`
 
-    Параметры:
-
-     * text: текст заголовка
-     * level: уровень заголовка (1-6)
-     * container: родительский элемент
+Параметры:
+* text: текст заголовка
+* level: уровень заголовка (1-6)
+* container: родительский элемент
 
    ***Возвращает: HTML-элемент заголовка (H1-H6)***
 
 
 ```javascript
 // Пример
-   page.addHeader('Заголовок второго уровня', 2);
+page.addHeader('Заголовок второго уровня', 2);
 ```
 
 
@@ -66,7 +64,6 @@
  `addField(params)`
 
  Параметры:
-
  ```javascript
      {
        type: 'text',             // Тип поля (text/select/textarea/checkbox/radio)
@@ -83,14 +80,14 @@
    ***Возвращает: HTML-элемент поля***
 
 ```javascript
- // Текстовое поле
+// Текстовое поле
    page.addField({
      type: 'text',
      name: 'username',
      label: 'Имя пользователя:'
   });
 
-   // Выпадающий список
+// Выпадающий список
    page.addField({
      type: 'select',
      name: 'gender',
@@ -102,11 +99,11 @@
  ##### Добавление DIV-контейнера
  `addDiv(name, parent = this.form, options = {})`
    
-  Параметры:
+Параметры:
+* name: CSS-класс контейнера
+* parent: родительский элемент
+* options: дополнительные параметры:
 
-     * name: CSS-класс контейнера
-     * parent: родительский элемент
-     * options: дополнительные параметры:
        {
          id: 'elementId',       // ID элемента
          attrs: {}              // Дополнительные атрибуты
@@ -135,8 +132,8 @@
 
 *Метод привязывает обработчик события click к кнопке, которая должна инициировать копирование текста*
 ```javascript
-	// Инициализация копирования    
-    page.initCopyFunct();
+// Инициализация копирования    
+page.initCopyFunct();
 ```		
 	id кнопки должно быть ***id="copyButton"***
 ```html
@@ -146,26 +143,26 @@
 ##### Сохранение в LocalStorage
 *Метод привязывает обработчик события click к кнопке, которая должна инициировать сохранение в LocalStorage*
 ```javascript
-	// Инициализация сохранения   
-	page.initSaveFunct();
+// Инициализация сохранения   
+page.initSaveFunct();
 ```	
 	id кнопки должно быть ***id="saveButton"***
 ```html
-	<button id="saveButton">Скопировать в LocalStorage</button>
-	<input id="source" type="text" value="Текст для сохранения">
+<button id="saveButton">Скопировать в LocalStorage</button>
+<input id="source" type="text" value="Текст для сохранения">
 ```
 
 ---
 ##### ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ:
 
-	- `getCurrentDate()` -  cтатический метод для получения текущей даты
-	- `setCurrentTimeRounded(isRound)` - статический метод получения и (опционального) округления текущего времени (до десятков минут)
-	- `addSeparator()` - добавляет горизонтальный разделитель (<hr>)
-	- `addSpacer()` - добавляет разделительную линию (120 символов '-')
-	- `removeField(name)` - удаляет поле по имени
-	- `clearForm()` - полностью очищает форму
-	- `showVersion(config)` - отображает версию интерфейса
-	- `calculateBSA()` – публичный метод класса `Page`, реализует:
+- `getCurrentDate()` -  cтатический метод для получения текущей даты
+- `setCurrentTimeRounded(isRound)` - статический метод получения и (опционального) округления текущего времени (до десятков минут)
+- `addSeparator()` - добавляет горизонтальный разделитель (<hr>)
+- `addSpacer()` - добавляет разделительную линию (120 символов '-')
+- `removeField(name)` - удаляет поле по имени
+- `clearForm()` - полностью очищает форму
+- `showVersion(config)` - отображает версию интерфейса
+- `calculateBSA()` – публичный метод класса `Page`, реализует:
 >
 >- Валидацию входных данных (рост и масса) из полей с классами `mass-field` и `growth-field`.
 >- Преобразование строковых значений в числа.
@@ -329,9 +326,7 @@ formatText(text) {
       value: Page.setCurrentTimeRounded(false),
       //setCurrentTimeRounded(true) - получает округленное время, setCurrentTimeRounded(false) - не округленнное
       className: 'time-field',
-
     });
-
 
     // Выбор группы крови (используем класс из AnesthVariables)
     page.addField({
@@ -477,13 +472,6 @@ formatText(text) {
 const arteries = AnesthVariables.art;   // массив строк
 ```
 
-###  Статический метод для рендера навигационного списка используем с классом *NavVariables*
-```javascript
-NavVariables.ref.forEach(item = {
-  // item.href, item.text
-});
-Page.renderNavList('#sidebar', NavVariables.ref);
-```
 ### «Цитата дня» (quoteOfTheDay.js)
 ```javascript
 window.onload = displayQuoteOfTheDay;   // выводит случайную цитату в элементы #quote-of-the-day / #quote-author
